@@ -43,17 +43,33 @@ class WeatherRepository (private val remoteDataSource: WeatherRemoteDataSource, 
         }
     }
 
-         suspend fun insertProduct(weather: Weather) = withContext(Dispatchers.IO) {
+        /* suspend fun insertProduct(weather: Weather) = withContext(Dispatchers.IO) {
             localDataSource.insertProduct(weather)
         }
 
          suspend fun deleteProduct(weather: Weather) = withContext(Dispatchers.IO) {
             localDataSource.removeProduct(weather)
-        }
+        }*/
 
          /*suspend fun getStoredProducts(): List<Weather> {
             return localDataSource.getStoredProducts()
         }*/
+
+    suspend fun insertForecast(forecast: Forcast) {
+        localDataSource.insertForecast(forecast)
+    }
+
+    suspend fun getAllForecast(): List<Forcast> {
+        return localDataSource.getAllForecast()
+    }
+
+    suspend fun deleteForecast(forecast: Forcast) {
+        localDataSource.deleteForecast(forecast)
+    }
+
+    suspend fun updateForecast(forecast: Forcast) {
+        localDataSource.updateForecast(forecast)
+    }
 
     companion object {
         @Volatile

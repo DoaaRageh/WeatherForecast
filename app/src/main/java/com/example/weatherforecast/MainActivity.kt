@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.example.weatherforecast.favorite.view.FavoriteFragment
 import com.example.weatherforecast.setting.view.SettingFragment
 import com.example.weatherforecast.weather.view.HomeFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -108,6 +109,7 @@ class MainActivity : AppCompatActivity() {
         } else if (itemId == R.id.item2) {
 
         } else if (itemId == R.id.item3) {
+            selectedFragment = FavoriteFragment()
         } else if (itemId == R.id.item4) {
             selectedFragment = SettingFragment()
         }
