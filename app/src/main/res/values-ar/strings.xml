@@ -1,15 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">WeatherForecast</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name">توقعات الطقس</string>
     <string name="wind">الرياح</string>
     <string name="humidity">الرطوبة</string>
-    <string name="cloud">CLOUD</string>
+    <string name="cloud">سحاب</string>
     <string name="home">الشاشة الرئيسية</string>
     <string name="alerts">الإنذارات</string>
     <string name="favorites">المفضلات</string>
     <string name="settings">الإعدادات</string>
     <string name="arabic">العربية</string>
     <string name="english">الانجليزية</string>
+    <string name="location">الموقع</string>
+    <string name="gps">نظام تحديد المواقع</string>
+    <string name="map">الخريطة</string>
+    <string name="temperature">درجة الحرارة</string>
+    <string name="kelvin">كلفن</string>
+    <string name="celsius">درجة مئوية</string>
+    <string name="fahrenheit">فهرنهايت</string>
+    <string name="windspeed">سرعة الرياح</string>
+    <string name="meterpersec">متر / ثانية</string>
+    <string name="milesPerHour">ميل/ساعة</string>
+    <string name="remove">إزالة</string>
+    <string name="min">الصغرى: </string>
+    <string name="max">"العظمى: "</string>
+    <string name="hoyrlyForecast">توقعات كل ساعة</string>
+    <string name="dailyForecast">توقعات كل يوم</string>
+    <string name="add">إضافة</string>
+    <string name="language">اللغة</string>
 </resources>

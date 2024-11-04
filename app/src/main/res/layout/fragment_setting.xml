@@ -11,7 +11,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Language"
+        android:text="@string/language"
         android:textColor="@color/white"
         android:textSize="25sp"
         app:layout_constraintStart_toEndOf="@+id/imageView"
@@ -68,23 +68,23 @@
         app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
     <RadioButton
-        android:id="@+id/radioGPS"
+        android:id="@+id/radioMap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:text="@string/gps"
+        android:text="@string/map"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="@+id/radioArabic"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <RadioButton
-        android:id="@+id/radioMap"
+        android:id="@+id/radioGPS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/map"
+        android:text="@string/gps"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="@+id/radioEnglish"
-        app:layout_constraintTop_toTopOf="@+id/radioGPS" />
+        app:layout_constraintTop_toTopOf="@+id/radioMap" />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -112,7 +112,7 @@
         android:layout_marginTop="12dp"
         android:text="@string/kelvin"
         android:textColor="@color/white"
-        app:layout_constraintStart_toStartOf="@+id/radioGPS"
+        app:layout_constraintStart_toStartOf="@+id/radioMap"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <RadioButton
@@ -161,7 +161,7 @@
         android:layout_marginTop="12dp"
         android:text="@string/meterpersec"
         android:textColor="@color/white"
-        app:layout_constraintStart_toStartOf="@+id/radioGPS"
+        app:layout_constraintStart_toStartOf="@+id/radioMap"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <RadioButton

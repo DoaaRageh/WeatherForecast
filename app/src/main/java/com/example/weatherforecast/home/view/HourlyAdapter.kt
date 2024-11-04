@@ -1,4 +1,4 @@
-package com.example.weatherforecast.weather.view
+package com.example.weatherforecast.home.view
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,15 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.weatherforecast.R
-import com.example.weatherforecast.WeatherDiffUtil
 import com.example.weatherforecast.databinding.HourlyLayoutBinding
 import com.example.weatherforecast.model.ForecastElement
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 
 
-class HourlyAdapter(val context: Context, var listener: (ForecastElement) -> Unit): ListAdapter<ForecastElement, HourlyAdapter.ViewHolder>(WeatherDiffUtil()) {
+class HourlyAdapter(val context: Context, var listener: (ForecastElement) -> Unit): ListAdapter<ForecastElement, HourlyAdapter.ViewHolder>(
+    WeatherDiffUtil()
+) {
     lateinit var binding: HourlyLayoutBinding
     val iconsUrl = "https://openweathermap.org/img/wn/"
 

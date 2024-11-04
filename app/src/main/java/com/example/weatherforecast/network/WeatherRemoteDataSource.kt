@@ -1,14 +1,15 @@
 package com.example.weatherforecast.network
 
+import com.example.weatherforecast.db.IWeatherDataSource
+import com.example.weatherforecast.model.AlarmRoom
+import com.example.weatherforecast.model.Forcast
 import com.example.weatherforecast.model.Forecast
-import com.example.weatherforecast.model.Hourly
 import com.example.weatherforecast.model.WeatherResponse
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
-import java.util.concurrent.Flow
 
 
-class WeatherRemoteDataSource {
+class WeatherRemoteDataSource: IWeatherDataSource {
 
     val apiInstance = RetrofitHelper.retrofitInstance.create(WetherService::class.java)
 
@@ -16,12 +17,24 @@ class WeatherRemoteDataSource {
         return apiInstance.getProducts()
     }*/
 
-     suspend fun getWeather(lat: Double, lon: Double, units: String, lang: String): Response<WeatherResponse> {
+    override suspend fun getWeather(lat: Double, lon: Double, units: String, lang: String): Response<WeatherResponse> {
         return apiInstance.getWeather(lat, lon, units, lang)
     }
 
-    suspend fun getForecast(lat: Double, lon: Double, units: String, lang: String): Response<Forecast> {
+    override suspend fun getForecast(lat: Double, lon: Double, units: String, lang: String): Response<Forecast> {
         return apiInstance.getForecast(lat, lon, units, lang)
+    }
+
+    override suspend fun insertAlarm(alarmRoom: AlarmRoom) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteAlarm(alarmRoom: AlarmRoom) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getAllAlarms(): Flow<List<AlarmRoom>> {
+        TODO("Not yet implemented")
     }
 
     companion object {
@@ -35,5 +48,21 @@ class WeatherRemoteDataSource {
                 instance
             }
         }
+    }
+
+    override suspend fun insertForecast(forecast: Forcast) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getAllForecast(): List<Forcast> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteForecast(forecast: Forcast) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateForecast(forecast: Forcast) {
+        TODO("Not yet implemented")
     }
 }

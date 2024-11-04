@@ -1,5 +1,6 @@
 package com.example.weatherforecast.favorite.view
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,11 +9,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherforecast.MainActivity
-import com.example.weatherforecast.R
 import com.example.weatherforecast.databinding.FragmentFavoriteBinding
-import com.example.weatherforecast.databinding.FragmentSettingBinding
+import com.example.weatherforecast.db.AppDataBase
 import com.example.weatherforecast.db.WeatherLocalDataSource
 import com.example.weatherforecast.favorite.viewmodel.FavoriteViewModel
 import com.example.weatherforecast.favorite.viewmodel.FavoriteViewModelFactory
@@ -20,7 +19,6 @@ import com.example.weatherforecast.map.view.MapFragment
 import com.example.weatherforecast.model.Forcast
 import com.example.weatherforecast.model.WeatherRepository
 import com.example.weatherforecast.network.WeatherRemoteDataSource
-import com.example.weatherforecast.setting.view.SettingFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -38,9 +36,11 @@ class FavoriteFragment : Fragment(), OnFavoriteClick {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        val prefs = requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE)
+        prefs.edit().putString("fragment", "fav").apply()
 
         repository = WeatherRepository.getInstance(
-            WeatherRemoteDataSource.getInstance(), WeatherLocalDataSource.getInstance(requireContext()))
+            WeatherRemoteDataSource.getInstance(), WeatherLocalDataSource.getInstance(AppDataBase.getInstance(requireContext()).getForecastDao()))
 
         favoritesAdapter = FavoritesAdapter(this)
 
@@ -75,12 +75,7 @@ class FavoriteFragment : Fragment(), OnFavoriteClick {
     }
 
     override suspend fun onRemoveClick(forecast: Forcast) {
-        repository.deleteForecast(forecast)
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.favorites.collectLatest { favorites ->
-                favoritesAdapter.submitList(favorites)
-            }
-        }
+        viewModel.updateFavoriteStatus(forecast)
     }
 
     override suspend fun onFacClick(forecast: Forcast) {

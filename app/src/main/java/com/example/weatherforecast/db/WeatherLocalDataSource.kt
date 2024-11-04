@@ -1,10 +1,13 @@
 package com.example.weatherforecast.db
 
-import android.content.Context
+import com.example.weatherforecast.model.AlarmRoom
 import com.example.weatherforecast.model.Forcast
-import com.example.weatherforecast.model.Weather
+import com.example.weatherforecast.model.Forecast
+import com.example.weatherforecast.model.WeatherResponse
+import kotlinx.coroutines.flow.Flow
+import retrofit2.Response
 
-class WeatherLocalDataSource(private val context: Context) {
+class WeatherLocalDataSource(val forecastDao: ForecastDao) : IWeatherDataSource {
 
 
     //private val weatherDao: WeatherDao = AppDataBase.getInstance(context).getProductDao()
@@ -26,31 +29,62 @@ class WeatherLocalDataSource(private val context: Context) {
         @Volatile
         private var INSTANCE: WeatherLocalDataSource? = null
 
-        fun getInstance(context: Context): WeatherLocalDataSource {
+        fun getInstance(forecastDao: ForecastDao): WeatherLocalDataSource {
             return INSTANCE ?: synchronized(this) {
-                val instance = WeatherLocalDataSource(context)
+                val instance = WeatherLocalDataSource(forecastDao)
                 INSTANCE = instance
                 instance
             }
         }
     }
 
-    private val forecastDao = AppDataBase.getInstance(context).getForecastDao()
+    //private val forecastDao = AppDataBase.getInstance(context).getForecastDao()
+    //private val alertDao = AppDataBase.getInstance(context).getAlertDao()
 
-    suspend fun insertForecast(forecast: Forcast) {
+    override suspend fun insertForecast(forecast: Forcast) {
         forecastDao.insertForecast(forecast)
     }
 
-    suspend fun getAllForecast(): List<Forcast> {
+    override suspend fun getAllForecast(): List<Forcast> {
         return forecastDao.getAllForecast()
     }
 
-    suspend fun deleteForecast(forecast: Forcast) {
+    override suspend fun deleteForecast(forecast: Forcast) {
         forecastDao.deleteForecast(forecast)
     }
 
-    suspend fun updateForecast(forecast: Forcast) {
+    override suspend fun updateForecast(forecast: Forcast) {
         forecastDao.updateForecast(forecast)
+    }
+
+    override suspend fun getWeather(
+        lat: Double,
+        lon: Double,
+        units: String,
+        lang: String
+    ): Response<WeatherResponse> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getForecast(
+        lat: Double,
+        lon: Double,
+        units: String,
+        lang: String
+    ): Response<Forecast> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun insertAlarm(alarmRoom: AlarmRoom) {
+        forecastDao.addAlarm(alarmRoom)
+    }
+
+    override suspend fun deleteAlarm(alarmRoom: AlarmRoom) {
+        forecastDao.deleteAlarm(alarmRoom)
+    }
+
+    override fun getAllAlarms(): Flow<List<AlarmRoom>> {
+        return forecastDao.getAllAlarms()
     }
 
 

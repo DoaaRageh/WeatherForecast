@@ -1,21 +1,20 @@
 package com.example.weatherforecast.model
 
 import android.util.Log
+import com.example.weatherforecast.db.IWeatherDataSource
 import com.example.weatherforecast.db.WeatherLocalDataSource
 import com.example.weatherforecast.network.WeatherRemoteDataSource
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.withContext
-import retrofit2.Response
 
-class WeatherRepository (private val remoteDataSource: WeatherRemoteDataSource, private val localDataSource: WeatherLocalDataSource) {
+class WeatherRepository (private val remoteDataSource: IWeatherDataSource, private val localDataSource: IWeatherDataSource) :
+    IWeatherRepository {
 
          /*suspend fun getAllProducts(): Response<WeatherResponse>  {
             return remoteDataSource.getProducts()
         }*/
 
-    suspend fun getWeather(lat: Double, lon: Double, units: String, lang: String): Flow<WeatherResponse> = flow {
+    override suspend fun getWeather(lat: Double, lon: Double, units: String, lang: String): Flow<WeatherResponse> = flow {
         val response = remoteDataSource.getWeather(lat, lon, units, lang)
         if (response.isSuccessful && response.body() != null) {
             Log.i("TAG", "getWeather: response success ${response.body()?.main?.temp}")
@@ -29,7 +28,7 @@ class WeatherRepository (private val remoteDataSource: WeatherRemoteDataSource, 
         }
     }
 
-    suspend fun getForecast(lat: Double, lon: Double, units: String, lang: String): Flow<Forecast> = flow {
+    override suspend fun getForecast(lat: Double, lon: Double, units: String, lang: String): Flow<Forecast> = flow {
         val response = remoteDataSource.getForecast(lat, lon, units, lang)
         if (response.isSuccessful && response.body() != null) {
             Log.i("TAG", "getWeather: response success")
@@ -43,32 +42,32 @@ class WeatherRepository (private val remoteDataSource: WeatherRemoteDataSource, 
         }
     }
 
-        /* suspend fun insertProduct(weather: Weather) = withContext(Dispatchers.IO) {
-            localDataSource.insertProduct(weather)
-        }
-
-         suspend fun deleteProduct(weather: Weather) = withContext(Dispatchers.IO) {
-            localDataSource.removeProduct(weather)
-        }*/
-
-         /*suspend fun getStoredProducts(): List<Weather> {
-            return localDataSource.getStoredProducts()
-        }*/
-
-    suspend fun insertForecast(forecast: Forcast) {
+    override suspend fun insertForecast(forecast: Forcast) {
         localDataSource.insertForecast(forecast)
     }
 
-    suspend fun getAllForecast(): List<Forcast> {
+    override suspend fun getAllForecast(): List<Forcast> {
         return localDataSource.getAllForecast()
     }
 
-    suspend fun deleteForecast(forecast: Forcast) {
+    override suspend fun deleteForecast(forecast: Forcast) {
         localDataSource.deleteForecast(forecast)
     }
 
-    suspend fun updateForecast(forecast: Forcast) {
+    override suspend fun updateForecast(forecast: Forcast) {
         localDataSource.updateForecast(forecast)
+    }
+
+    suspend fun addAlarm(alarmRoom: AlarmRoom) {
+        localDataSource.insertAlarm(alarmRoom)
+    }
+
+    suspend fun removeAlarm(alarmRoom: AlarmRoom) {
+        localDataSource.deleteAlarm(alarmRoom)
+    }
+
+    fun getAllAlarms(): Flow<List<AlarmRoom>> {
+        return localDataSource.getAllAlarms()
     }
 
     companion object {

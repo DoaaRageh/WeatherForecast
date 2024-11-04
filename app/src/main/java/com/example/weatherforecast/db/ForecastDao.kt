@@ -6,7 +6,9 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import androidx.room.Delete // Correctly import the Delete annotation
+import com.example.weatherforecast.model.AlarmRoom
 import com.example.weatherforecast.model.Forcast
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ForecastDao {
@@ -21,4 +23,11 @@ interface ForecastDao {
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateForecast(forecast: Forcast)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun addAlarm(alarmRoom: AlarmRoom)
+    @Delete
+    suspend fun deleteAlarm(alarmRoom: AlarmRoom)
+    @Query("Select * from alarm_table")
+    fun getAllAlarms(): Flow<List<AlarmRoom>>
 }

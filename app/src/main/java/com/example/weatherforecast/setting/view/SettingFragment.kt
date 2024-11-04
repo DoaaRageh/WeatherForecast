@@ -87,19 +87,19 @@ class SettingFragment : Fragment() {
             binding.radioCelsius.isChecked = true
             binding.radioKelvin.isChecked = false
             binding.radioFahrenheit.isChecked = false
-            setTemperature("standard")
+            setTemperature("c")
         }
         binding.radioKelvin.setOnClickListener {
             binding.radioCelsius.isChecked = false
             binding.radioKelvin.isChecked = true
             binding.radioFahrenheit.isChecked = false
-            setTemperature("metric")
+            setTemperature("k")
         }
         binding.radioFahrenheit.setOnClickListener {
             binding.radioCelsius.isChecked = false
             binding.radioKelvin.isChecked = false
             binding.radioFahrenheit.isChecked = true
-            setTemperature("imperial")
+            setTemperature("f")
         }
 
         binding.radioMeterPerSec.setOnClickListener {
