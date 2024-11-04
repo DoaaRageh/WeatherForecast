@@ -71,6 +71,18 @@ class WeatherRepository (private val remoteDataSource: WeatherRemoteDataSource, 
         localDataSource.updateForecast(forecast)
     }
 
+    suspend fun addAlarm(alarmRoom: AlarmRoom) {
+        localDataSource.insertAlarm(alarmRoom)
+    }
+
+    suspend fun removeAlarm(alarmRoom: AlarmRoom) {
+        localDataSource.deleteAlarm(alarmRoom)
+    }
+
+    fun getAllAlarms(): Flow<List<AlarmRoom>> {
+        return localDataSource.getAllAlarms()
+    }
+
     companion object {
         @Volatile
         private var INSTANCE: WeatherRepository? = null

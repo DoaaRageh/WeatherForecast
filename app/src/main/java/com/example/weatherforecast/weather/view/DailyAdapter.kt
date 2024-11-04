@@ -8,29 +8,29 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.weatherforecast.R
+import com.example.weatherforecast.databinding.DailyLayoutBinding
 import com.example.weatherforecast.databinding.HourlyLayoutBinding
-import com.example.weatherforecast.model.ForecastElement
+import com.example.weatherforecast.model.DailyWeather
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 
-class HourlyAdapter(val context: Context, var listener: (ForecastElement) -> Unit): ListAdapter<ForecastElement, HourlyAdapter.ViewHolder>(
-    WeatherDiffUtil()
-) {
-    lateinit var binding: HourlyLayoutBinding
+class DailyAdapter(val context: Context, var listener: (DailyWeather) -> Unit): ListAdapter<DailyWeather, DailyAdapter.ViewHolder>(DailyDiffUtil()) {
+    lateinit var binding: DailyLayoutBinding
     val iconsUrl = "https://openweathermap.org/img/wn/"
 
-    class ViewHolder(var binding: HourlyLayoutBinding): RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(var binding: DailyLayoutBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflator = LayoutInflater.from(parent.context)
-        binding = HourlyLayoutBinding.inflate(inflator, parent, false)
+        binding = DailyLayoutBinding.inflate(inflator, parent, false)
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val hourlyWeather = getItem(position)
-        val imageUrl = iconsUrl + hourlyWeather.weather[0].icon + "@2x.png"
+        val dailyWeather = getItem(position)
+        val imageUrl = iconsUrl + dailyWeather.icon + "@2x.png"
         Glide.with(context).load(imageUrl)
             .apply(
                 RequestOptions()
@@ -38,15 +38,20 @@ class HourlyAdapter(val context: Context, var listener: (ForecastElement) -> Uni
                     .error(R.drawable.ic_launcher_foreground)
             )
             .into(holder.binding.ivIcon)
-        holder.binding.tvTempreature.text = hourlyWeather.main.temp.toString()
+        //holder.binding.tvDay.text = dailyWeather.date
 
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("h a", Locale.getDefault())
+        // Format the date to display the day name
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val date: Date? = dateFormat.parse(dailyWeather.date)
+        val dayFormat = SimpleDateFormat("EEEE", Locale.getDefault()) // EEEE for full day name (e.g., "Monday")
+        val dayName = dayFormat.format(date ?: Date())
 
-        val date = inputFormat.parse(hourlyWeather.dt_txt)
+        // Set the day name and temperatures
+        holder.binding.tvDay.text = dayName
 
-        val formattedTime = outputFormat.format(date)
-        holder.binding.tvTime.text = formattedTime
+        holder.binding.tvMaxTemp.text = dailyWeather.maxTemp.toString()
+        holder.binding.tvMinTemp.text = dailyWeather.minTemp.toString()
+
 
         //holder.binding.tvTime.text = SimpleDateFormat("h a", Locale.getDefault()).format(Date(hourlyWeather.dt * 1000))
         /*holder.binding.row.setOnClickListener {

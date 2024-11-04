@@ -74,4 +74,20 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.1.0")
     implementation("org.osmdroid:osmdroid-android:6.1.10")
 
+    //navigation
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
+
+    //swiperefresh
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+
+    //truth
+    testImplementation("com.google.truth:truth:1.1.3")
+
+    //worker
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
+
+    //shimmer
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
+
 }

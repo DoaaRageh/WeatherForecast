@@ -21,6 +21,7 @@ import com.example.weatherforecast.model.Forcast
 import com.example.weatherforecast.model.WeatherRepository
 import com.example.weatherforecast.network.WeatherRemoteDataSource
 import com.example.weatherforecast.setting.view.SettingFragment
+import com.example.weatherforecast.weather.view.HomeFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -75,12 +76,7 @@ class FavoriteFragment : Fragment(), OnFavoriteClick {
     }
 
     override suspend fun onRemoveClick(forecast: Forcast) {
-        repository.deleteForecast(forecast)
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.favorites.collectLatest { favorites ->
-                favoritesAdapter.submitList(favorites)
-            }
-        }
+        viewModel.updateFavoriteStatus(forecast)
     }
 
     override suspend fun onFacClick(forecast: Forcast) {

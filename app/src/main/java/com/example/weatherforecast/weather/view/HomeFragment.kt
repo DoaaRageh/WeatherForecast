@@ -20,6 +20,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.weatherforecast.R
 import com.example.weatherforecast.databinding.FragmentHomeBinding
 import com.example.weatherforecast.db.WeatherLocalDataSource
+import com.example.weatherforecast.model.DailyWeather
 import com.example.weatherforecast.model.Forecast
 import com.example.weatherforecast.model.WeatherRepository
 import com.example.weatherforecast.model.WeatherResponse
@@ -37,6 +38,8 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 class HomeFragment : Fragment() {
@@ -46,6 +49,7 @@ class HomeFragment : Fragment() {
     private lateinit var forecastViewModel: ForecastViewModel
     lateinit var binding: FragmentHomeBinding
     lateinit var hourlyAdapter: HourlyAdapter
+    lateinit var dailyAdapter: DailyAdapter
     lateinit var fusedLocationproviderClient: FusedLocationProviderClient
     var latitude: Double = 0.0
     var longitude: Double = 0.0
@@ -56,17 +60,30 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        val latitude = arguments?.getDouble("latitude")
+        val longitude = arguments?.getDouble("longitude")
+
         binding = FragmentHomeBinding.inflate(inflater, container, false )
 
         val prefs = requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE)
         var language = prefs.getString("language", "en")
 
+
         hourlyAdapter = HourlyAdapter(requireContext()){}
+
+        dailyAdapter = DailyAdapter(requireContext()){}
 
         binding.hourlyRecyclerView.apply {
             adapter = hourlyAdapter
             layoutManager = LinearLayoutManager(context).apply {
                 orientation = RecyclerView.HORIZONTAL
+            }
+        }
+
+        binding.dailyRecyclerView.apply {
+            adapter = dailyAdapter
+            layoutManager = LinearLayoutManager(context).apply {
+                orientation = RecyclerView.VERTICAL
             }
         }
 
@@ -131,6 +148,8 @@ class HomeFragment : Fragment() {
                             val date = it.dt_txt.split(" ")[0]
                             date == currentDate
                         })
+                        val dailyWeatherList = createDailyWeatherList(response)
+                        dailyAdapter.submitList(dailyWeatherList)
                     }
                     is ApiState.Failure -> {
                         Log.i("TAG", "onCreateView: Failure")
@@ -140,7 +159,13 @@ class HomeFragment : Fragment() {
             }
         }
 
-        updateUI(language!!)
+        if (latitude != null && longitude != null) {
+            Log.d("WeatherFragment", "Using provided latitude: $latitude, longitude: $longitude")
+            weatherViewModel.getWeather(latitude, longitude, "metric", "en")
+            forecastViewModel.getForecast(latitude, longitude, "metric", "en")
+        } else {
+            updateUI(language!!)
+        }
 
         return binding.root
     }
@@ -182,14 +207,26 @@ class HomeFragment : Fragment() {
     }
 
 
-    companion object {
+    private fun createDailyWeatherList(forecast: Forecast): List<DailyWeather> {
+        val dailyWeatherList = mutableListOf<DailyWeather>()
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val seenDates = mutableSetOf<String>()
 
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-
-                }
+        forecast.list.forEach { forecastElement ->
+            val date = dateFormat.format(forecastElement.dt * 1000L)
+            if (date !in seenDates) {
+                seenDates.add(date)
+                dailyWeatherList.add(
+                    DailyWeather(
+                        date = date,
+                        maxTemp = forecastElement.main.temp_max.toInt(),
+                        minTemp = forecastElement.main.temp_min.toInt(),
+                        icon = forecastElement.weather[0].icon
+                    )
+                )
             }
+        }
+        return dailyWeatherList
     }
+
 }

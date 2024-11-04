@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.example.weatherforecast.MainActivity
 import com.example.weatherforecast.R
 import com.example.weatherforecast.databinding.FragmentMapBinding
 import com.example.weatherforecast.databinding.FragmentSettingBinding
@@ -22,6 +23,8 @@ import com.example.weatherforecast.model.WeatherRepository
 import com.example.weatherforecast.model.WeatherResponse
 import com.example.weatherforecast.network.ApiState
 import com.example.weatherforecast.network.WeatherRemoteDataSource
+import com.example.weatherforecast.setting.view.SettingFragment
+import com.example.weatherforecast.weather.view.HomeFragment
 import com.example.weatherforecast.weather.viewmodel.ForecastViewModel
 import com.example.weatherforecast.weather.viewmodel.ForecastViewModelFactory
 import com.example.weatherforecast.weather.viewmodel.WeatherViewModel
@@ -39,7 +42,6 @@ import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.MapEventsOverlay
 
 class MapFragment : Fragment(), MapEventsReceiver {
-
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var marker: Marker? = null
     private var lastTouchedGeoPoint: GeoPoint? = null
@@ -48,6 +50,8 @@ class MapFragment : Fragment(), MapEventsReceiver {
     private lateinit var forecast: Forcast
     private lateinit var weatherFactory: WeatherViewModelFactory
     private lateinit var weatherViewModel: WeatherViewModel
+    var latitude = 0.0
+    var longitude = 0.0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -95,6 +99,22 @@ class MapFragment : Fragment(), MapEventsReceiver {
         binding.btnAdd.setOnClickListener {
             viewLifecycleOwner.lifecycleScope.launch {
                 Toast.makeText(context, "Added to favorites", Toast.LENGTH_SHORT).show()
+                val homeFragment = HomeFragment()
+
+                // Create a Bundle to hold the latitude and longitude
+                val args = Bundle().apply {
+                    putDouble("latitude", latitude)
+                    putDouble("longitude", longitude)
+                }
+
+                // Set the arguments to the fragment
+                homeFragment.arguments = args
+
+                // Begin the transaction to replace the current fragment with WeatherFragment
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView, homeFragment)
+                    .addToBackStack(null) // Optional: Add to back stack to allow navigating back
+                    .commit()
             }
         }
 
@@ -108,15 +128,23 @@ class MapFragment : Fragment(), MapEventsReceiver {
         binding.mapView.setTileSource(TileSourceFactory.MAPNIK)
         binding.mapView.setBuiltInZoomControls(true)
         binding.mapView.setMultiTouchControls(true)
-        //binding.mapView.controller.setZoom(20.0)
-        binding.mapView.controller.setZoom(17.0)
-        // Use the passed latitude and longitude from the fragment arguments
         val latitude = arguments?.getDouble("LATITUDE") ?: 30.0603656
         val longitude = arguments?.getDouble("LONGITUDE") ?: 31.384177
         val initialLocation = GeoPoint(latitude, longitude)
-
         // Set initial marker location
-        marker = Marker(binding.mapView).apply {
+
+        val marker = Marker(binding.mapView)
+        marker.position = initialLocation
+
+        val drawable = resources.getDrawable(R.drawable.placeholder, null)
+        marker.icon = drawable
+
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+        binding.mapView.overlays.add(marker)
+
+        binding.mapView.controller.setCenter(initialLocation)
+
+        /*marker = Marker(binding.mapView).apply {
             position = initialLocation
             icon = resources.getDrawable(R.drawable.placeholder, null)
             setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
@@ -127,7 +155,7 @@ class MapFragment : Fragment(), MapEventsReceiver {
 
         // Add MapEventsOverlay to detect touch events
         val mapEventsOverlay = MapEventsOverlay(this)
-        binding.mapView.overlays.add(mapEventsOverlay)
+        binding.mapView.overlays.add(mapEventsOverlay)*/
     }
 
     // Called when user performs a single tap on the map
@@ -160,8 +188,13 @@ class MapFragment : Fragment(), MapEventsReceiver {
             binding.mapView.overlays.add(marker!!)
             binding.mapView.invalidate() // Refresh the map to show the new marker
 
+            longitude = geoPoint.latitude
+            longitude = geoPoint.longitude
+
             // Optionally show a toast with the coordinates
-            Toast.makeText(requireContext(), "Lat: ${geoPoint.latitude}, Lon: ${geoPoint.longitude}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Lat: ${latitude}, Lon: ${longitude}", Toast.LENGTH_SHORT).show()
+
+
         } ?: run {
             Toast.makeText(requireContext(), "Please touch the map first!", Toast.LENGTH_SHORT).show()
         }

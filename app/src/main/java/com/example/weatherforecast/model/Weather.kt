@@ -81,3 +81,5 @@ data class WeatherResponse(
     val base: String,
     val wind: Wind
 )
+
+data class DailyWeather(val date: String, val maxTemp: Int, val minTemp: Int,val icon: String)

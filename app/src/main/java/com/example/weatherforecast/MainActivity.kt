@@ -3,6 +3,7 @@ package com.example.weatherforecast
 import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
@@ -15,7 +16,9 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.example.weatherforecast.alert.view.AlertFragment
 import com.example.weatherforecast.favorite.view.FavoriteFragment
+import com.example.weatherforecast.map.view.MapFragment
 import com.example.weatherforecast.setting.view.SettingFragment
 import com.example.weatherforecast.weather.view.HomeFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -23,11 +26,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class MainActivity : AppCompatActivity() {
     private val REQUEST_LOCATION_CODE = 3
     lateinit var trns: FragmentTransaction
+    lateinit var location: String
+    lateinit var prefs: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
+        prefs = getSharedPreferences("settings", Context.MODE_PRIVATE)
+        location = prefs.getString("location", "gps").toString()
 
         val mgr: FragmentManager = supportFragmentManager
         trns = mgr.beginTransaction()
@@ -44,7 +52,16 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         if(checkPermessions()) {
             if (isLocationEnabled()) {
-                loadHomeFragment()
+                //loadHomeFragment()
+                location = prefs.getString("location", "gps").toString()
+                if (location == "gps") {
+                    // Use GPS to get location
+                    // Implement your logic to fetch weather based on GPS location
+                    showFragment(HomeFragment())
+                } else {
+                    // Open map and get location
+                    showFragment(MapFragment())
+                }
             }
             else {
                 enableLocationServices()
@@ -59,6 +76,8 @@ class MainActivity : AppCompatActivity() {
             )
         }
     }
+
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -104,9 +123,15 @@ class MainActivity : AppCompatActivity() {
     private fun loadSelectedBottomNavigationFragment(itemId: Int) {
         var selectedFragment: Fragment? = null
         if (itemId == R.id.item1) {
-            selectedFragment = HomeFragment()
+            location = prefs.getString("location", "gps").toString()
+            if (location == "gps") {
+                selectedFragment = HomeFragment()
+            } else {
+                selectedFragment = MapFragment()
+            }
 
         } else if (itemId == R.id.item2) {
+            selectedFragment = AlertFragment()
 
         } else if (itemId == R.id.item3) {
             selectedFragment = FavoriteFragment()
