@@ -38,7 +38,7 @@ class HourlyAdapter(val context: Context, var listener: (ForecastElement) -> Uni
                     .error(R.drawable.ic_launcher_foreground)
             )
             .into(holder.binding.ivIcon)
-        holder.binding.tvTempreature.text = hourlyWeather.main.temp.toString()
+        //holder.binding.tvTempreature.text = hourlyWeather.main.temp.toString()
 
         val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         val outputFormat = SimpleDateFormat("h a", Locale.getDefault())
@@ -47,6 +47,26 @@ class HourlyAdapter(val context: Context, var listener: (ForecastElement) -> Uni
 
         val formattedTime = outputFormat.format(date)
         holder.binding.tvTime.text = formattedTime
+
+        val prefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
+        val unit = prefs.getString("temperature", "k")
+        val tempInKelvin= hourlyWeather.main.temp
+        when (unit) {
+            "c" -> {
+                // Convert Kelvin to Celsius
+                val tempInCelsius = tempInKelvin - 273.15
+                holder.binding.tvTempreature.text = "%.1f".format(tempInCelsius.toDouble())
+            }
+            "f" -> {
+                // Convert Kelvin to Fahrenheit
+                val tempInFahrenheit = (tempInKelvin - 273.15) * 9/5 + 32
+                holder.binding.tvTempreature.text = "%.1f".format(tempInFahrenheit.toDouble())
+            }
+            else -> {
+                // Default to Kelvin
+                holder.binding.tvTempreature.text = "%.1f".format(tempInKelvin.toDouble())
+            }
+        }
 
         //holder.binding.tvTime.text = SimpleDateFormat("h a", Locale.getDefault()).format(Date(hourlyWeather.dt * 1000))
         /*holder.binding.row.setOnClickListener {

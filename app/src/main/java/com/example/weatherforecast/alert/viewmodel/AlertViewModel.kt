@@ -44,9 +44,9 @@ class AlertViewModel (private val repo: WeatherRepository) : ViewModel() {
         }
     }
 
-    fun getWeather(long: Double, lat: Double, appid: String, units: String,lang:String) {
+    fun getWeather(long: Double, lat: Double,lang:String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val weather = repo.getWeather(long, lat, units,lang).collect { weatherResponse ->
+            val weather = repo.getWeather(long, lat,lang).collect { weatherResponse ->
                 _weatherList.value = weatherResponse
                 Log.d("favvm", "Weather: ${weatherResponse}")
 

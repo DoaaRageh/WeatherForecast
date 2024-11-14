@@ -14,8 +14,8 @@ class WeatherRepository (private val remoteDataSource: IWeatherDataSource, priva
             return remoteDataSource.getProducts()
         }*/
 
-    override suspend fun getWeather(lat: Double, lon: Double, units: String, lang: String): Flow<WeatherResponse> = flow {
-        val response = remoteDataSource.getWeather(lat, lon, units, lang)
+    override suspend fun getWeather(lat: Double, lon: Double, lang: String): Flow<WeatherResponse> = flow {
+        val response = remoteDataSource.getWeather(lat, lon, lang)
         if (response.isSuccessful && response.body() != null) {
             Log.i("TAG", "getWeather: response success ${response.body()?.main?.temp}")
             emit(response.body()!!)
@@ -28,8 +28,8 @@ class WeatherRepository (private val remoteDataSource: IWeatherDataSource, priva
         }
     }
 
-    override suspend fun getForecast(lat: Double, lon: Double, units: String, lang: String): Flow<Forecast> = flow {
-        val response = remoteDataSource.getForecast(lat, lon, units, lang)
+    override suspend fun getForecast(lat: Double, lon: Double, lang: String): Flow<Forecast> = flow {
+        val response = remoteDataSource.getForecast(lat, lon, lang)
         if (response.isSuccessful && response.body() != null) {
             Log.i("TAG", "getWeather: response success")
             emit(response.body()!!)

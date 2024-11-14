@@ -57,7 +57,7 @@ class WeatherNotificationReceiver : BroadcastReceiver() {
 
         val viewModel = AlertViewModel(repository)
         scope.launch {
-            viewModel.getWeather(longitude, latitude, apiKey, units, actualLang)
+            viewModel.getWeather(longitude, latitude, actualLang)
                 viewModel.weatherList.collect{ weatherResponse->
                     weatherResponse?.let {
                         description= weatherResponse.weather?.get(0)?.description.toString()

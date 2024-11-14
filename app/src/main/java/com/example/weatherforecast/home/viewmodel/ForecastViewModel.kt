@@ -16,20 +16,17 @@ class ForecastViewModel(private val weatherRepo: IWeatherRepository) : ViewModel
     private val _apiState = MutableStateFlow<ApiState>(ApiState.Loading)
     val apiState: MutableStateFlow<ApiState> = _apiState
 
-    var lastSuccessfulForecast: Forecast? = null
 
-
-    fun getForecast(lat: Double, lon: Double, units: String, lang: String) {
+    fun getForecast(lat: Double, lon: Double, lang: String) {
         _apiState.value = ApiState.Loading
         viewModelScope.launch {
-            weatherRepo.getForecast(lat, lon, units, lang)
+            weatherRepo.getForecast(lat, lon, lang)
                 .catch { e ->
                     Log.i("TAG", "getWeather: $e")
                     _apiState.value = ApiState.Failure(e)
                 }
                 .collect { weather ->
                     Log.i("TAG", "getWeather: ")
-                    lastSuccessfulForecast = weather
                     _apiState.value = ApiState.Success(weather)
                 }
         }

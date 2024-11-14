@@ -16,9 +16,9 @@ interface IWeatherDataSource {
 
     suspend fun updateForecast(forecast: Forcast)
 
-    suspend fun getWeather(lat: Double, lon: Double, units: String, lang: String): Response<WeatherResponse>
+    suspend fun getWeather(lat: Double, lon: Double, lang: String): Response<WeatherResponse>
 
-    suspend fun getForecast(lat: Double, lon: Double, units: String, lang: String): Response<Forecast>
+    suspend fun getForecast(lat: Double, lon: Double, lang: String): Response<Forecast>
 
     suspend fun insertAlarm(alarmRoom: AlarmRoom)
 

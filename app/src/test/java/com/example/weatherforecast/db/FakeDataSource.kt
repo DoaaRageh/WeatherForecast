@@ -1,8 +1,10 @@
 package com.example.weatherforecast.db
 
+import com.example.weatherforecast.model.AlarmRoom
 import com.example.weatherforecast.model.Forcast
 import com.example.weatherforecast.model.Forecast
 import com.example.weatherforecast.model.WeatherResponse
+import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 class FakeDataSource(private val forecastData: MutableList<Forcast>? = mutableListOf()): IWeatherDataSource {
@@ -37,6 +39,18 @@ class FakeDataSource(private val forecastData: MutableList<Forcast>? = mutableLi
         units: String,
         lang: String
     ): Response<Forecast> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun insertAlarm(alarmRoom: AlarmRoom) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteAlarm(alarmRoom: AlarmRoom) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getAllAlarms(): Flow<List<AlarmRoom>> {
         TODO("Not yet implemented")
     }
 }

@@ -14,11 +14,11 @@ interface WetherService {
     suspend fun getForecast(): Response<WeatherResponse>
 
     @GET("forecast")
-    suspend fun getForecast(@Query("lat") lat: Double, @Query("lon") lon: Double, @Query("units") units: String,
+    suspend fun getForecast(@Query("lat") lat: Double, @Query("lon") lon: Double,
                            @Query("lang") lang: String, @Query("appid") appId: String = "ad34eb3b0828e3710f5503b35fc9d23d"): Response<Forecast>
 
     @GET("weather")
-    suspend fun getWeather(@Query("lat") lat: Double, @Query("lon") lon: Double, @Query("units") units: String,
+    suspend fun getWeather(@Query("lat") lat: Double, @Query("lon") lon: Double,
     @Query("lang") lang: String, @Query("appid") appId: String = "ad34eb3b0828e3710f5503b35fc9d23d"): Response<WeatherResponse>
 }
 

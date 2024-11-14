@@ -14,10 +14,10 @@ class SettingViewModel(private val productsRepo: WeatherRepository) : ViewModel(
     private val _apiState = MutableStateFlow<ApiState>(ApiState.Loading)
     val apiState: MutableStateFlow<ApiState> = _apiState
 
-    fun getForecast(lat: Double, lon: Double, units: String, lang: String) {
+    fun getForecast(lat: Double, lon: Double, lang: String) {
         _apiState.value = ApiState.Loading
         viewModelScope.launch {
-            productsRepo.getForecast(lat, lon, units, lang)
+            productsRepo.getForecast(lat, lon, lang)
                 .catch { e ->
                     Log.i("TAG", "getWeather: $e")
                     _apiState.value = ApiState.Failure(e)

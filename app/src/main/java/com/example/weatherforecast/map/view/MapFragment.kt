@@ -182,7 +182,7 @@ class MapFragment : Fragment(), MapEventsReceiver {
 
     private fun placeMarkerAtLastTouchedLocation() {
         lastTouchedGeoPoint?.let { geoPoint ->
-            weatherViewModel.getWeather(geoPoint.latitude, geoPoint.longitude, "metric", "en")
+            weatherViewModel.getWeather(geoPoint.latitude, geoPoint.longitude, "en")
 
             // Remove the old marker if it exists
             marker?.let {

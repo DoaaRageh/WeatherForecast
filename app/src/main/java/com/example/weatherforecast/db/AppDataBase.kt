@@ -13,8 +13,6 @@ import com.example.weatherforecast.model.Weather
 abstract class AppDataBase : RoomDatabase() {
 
     abstract fun getForecastDao(): ForecastDao
-    abstract fun getAlertDao(): AlarmDAO
-
     companion object {
         @Volatile
         private var INSTANCE: AppDataBase? = null

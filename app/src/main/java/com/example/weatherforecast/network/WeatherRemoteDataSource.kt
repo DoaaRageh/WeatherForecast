@@ -17,12 +17,12 @@ class WeatherRemoteDataSource: IWeatherDataSource {
         return apiInstance.getProducts()
     }*/
 
-    override suspend fun getWeather(lat: Double, lon: Double, units: String, lang: String): Response<WeatherResponse> {
-        return apiInstance.getWeather(lat, lon, units, lang)
+    override suspend fun getWeather(lat: Double, lon: Double, lang: String): Response<WeatherResponse> {
+        return apiInstance.getWeather(lat, lon, lang)
     }
 
-    override suspend fun getForecast(lat: Double, lon: Double, units: String, lang: String): Response<Forecast> {
-        return apiInstance.getForecast(lat, lon, units, lang)
+    override suspend fun getForecast(lat: Double, lon: Double, lang: String): Response<Forecast> {
+        return apiInstance.getForecast(lat, lon, lang)
     }
 
     override suspend fun insertAlarm(alarmRoom: AlarmRoom) {

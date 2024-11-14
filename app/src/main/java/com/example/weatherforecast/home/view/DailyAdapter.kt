@@ -49,8 +49,37 @@ class DailyAdapter(val context: Context, var listener: (DailyWeather) -> Unit): 
         // Set the day name and temperatures
         holder.binding.tvDay.text = dayName
 
-        holder.binding.tvMaxTemp.text = dailyWeather.maxTemp.toString()
-        holder.binding.tvMinTemp.text = dailyWeather.minTemp.toString()
+        /*holder.binding.tvMaxTemp.text = dailyWeather.maxTemp.toString()
+        holder.binding.tvMinTemp.text = dailyWeather.minTemp.toString()*/
+
+        val prefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
+        val unit = prefs.getString("temperature", "k")
+        val maxTempInKelvin= dailyWeather.maxTemp
+        val minTempInKelvin= dailyWeather.minTemp
+        when (unit) {
+            "c" -> {
+                // Convert Kelvin to Celsius
+                val maxTempInCelsius = maxTempInKelvin - 273.15
+                val minTempInCelsius = minTempInKelvin - 273.15
+
+                holder.binding.tvMaxTemp.text = "%.1f".format(maxTempInCelsius.toDouble())
+                holder.binding.tvMinTemp.text = "%.1f".format(minTempInCelsius.toDouble())
+            }
+            "f" -> {
+                // Convert Kelvin to Fahrenheit
+                val maxTempInFahrenheit = (maxTempInKelvin - 273.15) * 9/5 + 32
+                val minTempInFahrenheit = (minTempInKelvin - 273.15) * 9/5 + 32
+
+                holder.binding.tvMaxTemp.text = "%.1f".format(maxTempInFahrenheit.toDouble())
+                holder.binding.tvMinTemp.text = "%.1f".format(minTempInFahrenheit.toDouble())
+
+            }
+            else -> {
+                // Default to Kelvin
+                holder.binding.tvMaxTemp.text = "%.1f".format(maxTempInKelvin.toDouble())
+                holder.binding.tvMinTemp.text = "%.1f".format(minTempInKelvin.toDouble())
+            }
+        }
 
 
         //holder.binding.tvTime.text = SimpleDateFormat("h a", Locale.getDefault()).format(Date(hourlyWeather.dt * 1000))

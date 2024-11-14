@@ -31,12 +31,14 @@ import com.example.weatherforecast.home.viewmodel.ForecastViewModel
 import com.example.weatherforecast.home.viewmodel.ForecastViewModelFactory
 import com.example.weatherforecast.home.viewmodel.WeatherViewModel
 import com.example.weatherforecast.home.viewmodel.WeatherViewModelFactory
+import com.example.weatherforecast.weather.view.DailyAdapter
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -118,6 +120,14 @@ class HomeFragment : Fragment() {
                         binding.progressBar.visibility = View.GONE
                         binding.scrollView.visibility = View.VISIBLE
                         var response = state.weather as WeatherResponse
+
+                        val sharedPreferences = requireContext().getSharedPreferences("weather_data", Context.MODE_PRIVATE)
+                        val editor = sharedPreferences.edit()
+
+                        val weatherJson = Gson().toJson(state.weather)
+
+                        editor.putString("last_weather_data", weatherJson)
+                        editor.apply()
                         //binding.tvTempreture.text = response.main.temp.toString()
                         binding.tvDescription.text = response.weather[0].description
                         binding.tvCity.text = response.name
@@ -221,8 +231,8 @@ class HomeFragment : Fragment() {
 
         if (latitude != null && longitude != null) {
             Log.d("WeatherFragment", "Using provided latitude: $latitude, longitude: $longitude")
-            weatherViewModel.getWeather(latitude, longitude, "metric", "en")
-            forecastViewModel.getForecast(latitude, longitude, "metric", "en")
+            weatherViewModel.getWeather(latitude, longitude, "en")
+            forecastViewModel.getForecast(latitude, longitude, "en")
         } else {
             updateUI(language!!)
         }
@@ -255,8 +265,8 @@ class HomeFragment : Fragment() {
                 longitude = location.locations[0].longitude
                 Log.i("Location", "onLocationResult: $latitude : $longitude")
 
-                weatherViewModel.getWeather(latitude, longitude, "metric", language)
-                forecastViewModel.getForecast(latitude, longitude, "metric", language)
+                weatherViewModel.getWeather(latitude, longitude, language)
+                forecastViewModel.getForecast(latitude, longitude, language)
                 fusedLocationproviderClient.removeLocationUpdates(this)
             }
         }
