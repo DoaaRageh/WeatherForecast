@@ -27,7 +27,6 @@ class FakeDataSource(private val forecastData: MutableList<Forcast>? = mutableLi
     override suspend fun getWeather(
         lat: Double,
         lon: Double,
-        units: String,
         lang: String
     ): Response<WeatherResponse> {
         TODO("Not yet implemented")
@@ -36,7 +35,6 @@ class FakeDataSource(private val forecastData: MutableList<Forcast>? = mutableLi
     override suspend fun getForecast(
         lat: Double,
         lon: Double,
-        units: String,
         lang: String
     ): Response<Forecast> {
         TODO("Not yet implemented")

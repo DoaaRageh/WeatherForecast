@@ -11,7 +11,6 @@ class FakeWeatherRepository: IWeatherRepository {
     override suspend fun getWeather(
         lat: Double,
         lon: Double,
-        units: String,
         lang: String
     ): Flow<WeatherResponse> {
         TODO("Not yet implemented")
@@ -20,7 +19,6 @@ class FakeWeatherRepository: IWeatherRepository {
     override suspend fun getForecast(
         lat: Double,
         lon: Double,
-        units: String,
         lang: String
     ): Flow<Forecast> {
         TODO("Not yet implemented")
