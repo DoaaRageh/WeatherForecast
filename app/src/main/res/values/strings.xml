@@ -26,5 +26,8 @@
     <string name="dailyForecast">Daily Forecast</string>
     <string name="add">Add</string>
     <string name="language">Language</string>
+<<<<<<< HEAD
     <string name="pressure">PRESSURE</string>
+=======
+>>>>>>> a394e0e06dc767adcaf48e68c613f53011927fa3
 </resources>

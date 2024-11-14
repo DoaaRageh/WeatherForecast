@@ -1,7 +1,8 @@
-package com.example.weatherforecast.home.view
+package com.example.weatherforecast.weather.view
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.weatherforecast.model.DailyWeather
+import com.example.weatherforecast.model.ForecastElement
 
 class DailyDiffUtil: DiffUtil.ItemCallback<DailyWeather>() {
     override fun areItemsTheSame(oldItem: DailyWeather, newItem: DailyWeather): Boolean {

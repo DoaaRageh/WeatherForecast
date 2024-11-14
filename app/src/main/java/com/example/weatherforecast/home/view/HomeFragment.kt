@@ -71,6 +71,7 @@ class HomeFragment : Fragment() {
         prefs.edit().putString("fragment", "home").apply()
 
 
+
         hourlyAdapter = HourlyAdapter(requireContext()){}
 
         dailyAdapter = DailyAdapter(requireContext()){}

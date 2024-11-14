@@ -19,6 +19,7 @@ import com.example.weatherforecast.map.view.MapFragment
 import com.example.weatherforecast.model.Forcast
 import com.example.weatherforecast.model.WeatherRepository
 import com.example.weatherforecast.network.WeatherRemoteDataSource
+
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

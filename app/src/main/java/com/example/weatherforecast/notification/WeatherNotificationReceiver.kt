@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Notification
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
+
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -17,6 +18,7 @@ import com.example.weatherforecast.alert.viewmodel.AlertViewModel
 import com.example.weatherforecast.db.AppDataBase
 import com.example.weatherforecast.db.WeatherLocalDataSource
 import com.example.weatherforecast.model.WeatherRepository
+
 import com.example.weatherforecast.network.WeatherRemoteDataSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -48,7 +50,9 @@ class WeatherNotificationReceiver : BroadcastReceiver() {
         checkOnSettings()
 
         repository = WeatherRepository.getInstance(
+
             WeatherRemoteDataSource.getInstance(), WeatherLocalDataSource.getInstance(AppDataBase.getInstance(context).getForecastDao()))
+
 
 
         val viewModel = AlertViewModel(repository)
@@ -70,7 +74,9 @@ class WeatherNotificationReceiver : BroadcastReceiver() {
                         )
 
                         context?.let {
+
                             val pastWeatherSummary = description
+
 
                             val notification = NotificationCompat.Builder(it, "weather_channel")
                                 .setSmallIcon(R.drawable.baseline_cloud_queue_24)

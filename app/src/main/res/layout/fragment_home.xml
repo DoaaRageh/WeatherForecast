@@ -447,6 +447,12 @@
                                 app:layout_constraintStart_toEndOf="@+id/windIcon"
                                 app:layout_constraintTop_toTopOf="@+id/windIcon" />
 
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:layout_width="164dp"
+                                android:layout_height="8dp"
+                                tools:layout_editor_absoluteX="1dp"
+                                tools:layout_editor_absoluteY="141dp" />
+
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -627,11 +633,13 @@
                     android:id="@+id/dailyRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+
                     android:layout_marginTop="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/pressureCard" />
+
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

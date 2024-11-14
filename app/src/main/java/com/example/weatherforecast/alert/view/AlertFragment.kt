@@ -14,6 +14,7 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -34,6 +35,7 @@ import com.example.weatherforecast.db.AppDataBase
 import com.example.weatherforecast.db.WeatherLocalDataSource
 import com.example.weatherforecast.model.AlarmRoom
 import com.example.weatherforecast.model.WeatherRepository
+
 import com.example.weatherforecast.network.WeatherRemoteDataSource
 import com.example.weatherforecast.notification.WeatherNotificationReceiver
 import kotlinx.coroutines.flow.collectLatest

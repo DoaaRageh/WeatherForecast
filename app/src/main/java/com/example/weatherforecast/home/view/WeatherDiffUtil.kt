@@ -1,5 +1,6 @@
 package com.example.weatherforecast.home.view
 
+
 import androidx.recyclerview.widget.DiffUtil
 import com.example.weatherforecast.model.ForecastElement
 

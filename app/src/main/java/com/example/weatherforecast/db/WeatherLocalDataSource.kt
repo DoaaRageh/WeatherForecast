@@ -1,11 +1,14 @@
 package com.example.weatherforecast.db
 
+
 import com.example.weatherforecast.model.AlarmRoom
 import com.example.weatherforecast.model.Forcast
 import com.example.weatherforecast.model.Forecast
 import com.example.weatherforecast.model.WeatherResponse
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
+
+
 
 class WeatherLocalDataSource(val forecastDao: ForecastDao) : IWeatherDataSource {
 
@@ -38,8 +41,10 @@ class WeatherLocalDataSource(val forecastDao: ForecastDao) : IWeatherDataSource 
         }
     }
 
+
     //private val forecastDao = AppDataBase.getInstance(context).getForecastDao()
     //private val alertDao = AppDataBase.getInstance(context).getAlertDao()
+
 
     override suspend fun insertForecast(forecast: Forcast) {
         forecastDao.insertForecast(forecast)
@@ -56,6 +61,7 @@ class WeatherLocalDataSource(val forecastDao: ForecastDao) : IWeatherDataSource 
     override suspend fun updateForecast(forecast: Forcast) {
         forecastDao.updateForecast(forecast)
     }
+
 
     override suspend fun getWeather(
         lat: Double,
@@ -85,6 +91,7 @@ class WeatherLocalDataSource(val forecastDao: ForecastDao) : IWeatherDataSource 
 
     override fun getAllAlarms(): Flow<List<AlarmRoom>> {
         return forecastDao.getAllAlarms()
+
     }
 
 

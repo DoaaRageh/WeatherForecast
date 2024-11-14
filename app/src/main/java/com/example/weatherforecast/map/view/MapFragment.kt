@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.example.weatherforecast.MainActivity
 import com.example.weatherforecast.R
 import com.example.weatherforecast.databinding.FragmentMapBinding
 import com.example.weatherforecast.db.AppDataBase
@@ -23,6 +24,7 @@ import com.example.weatherforecast.home.view.HomeFragment
 import com.example.weatherforecast.home.viewmodel.WeatherViewModel
 import com.example.weatherforecast.home.viewmodel.WeatherViewModelFactory
 import com.example.weatherforecast.model.AlarmRoom
+
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.flow.collectLatest
@@ -132,12 +134,14 @@ class MapFragment : Fragment(), MapEventsReceiver {
         binding.mapView.maxZoomLevel = 18.0
         binding.mapView.controller.setZoom(15.0)
 
+
         val latitude = arguments?.getDouble("LATITUDE") ?: 30.0603656
         val longitude = arguments?.getDouble("LONGITUDE") ?: 31.384177
         val initialLocation = GeoPoint(latitude, longitude)
         // Set initial marker location
 
         /*val marker = Marker(binding.mapView)
+
         marker.position = initialLocation
 
         val drawable = resources.getDrawable(R.drawable.placeholder, null)
@@ -146,9 +150,11 @@ class MapFragment : Fragment(), MapEventsReceiver {
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
         binding.mapView.overlays.add(marker)
 
+
         binding.mapView.controller.setCenter(initialLocation)*/
 
         marker = Marker(binding.mapView).apply {
+
             position = initialLocation
             icon = resources.getDrawable(R.drawable.placeholder, null)
             setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
@@ -199,6 +205,7 @@ class MapFragment : Fragment(), MapEventsReceiver {
 
             // Optionally show a toast with the coordinates
             Toast.makeText(requireContext(), "Lat: $latitude, Lon: $longitude", Toast.LENGTH_SHORT).show()
+
         } ?: run {
             Toast.makeText(requireContext(), "Please touch the map first!", Toast.LENGTH_SHORT).show()
         }
